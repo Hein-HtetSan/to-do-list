@@ -9,7 +9,7 @@ class PostController extends Controller
 {
     // create custom view
     public function create() {
-        $posts = Post::orderBy('updated_at', 'desc')->get()->toArray();
+        $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
         return view('create', compact('posts'));
     }
 
@@ -18,13 +18,13 @@ class PostController extends Controller
         
         $data = $this->getPostData($req);
         Post::create($data);
-        return back();
+        return back()->with(["insertsuccess" => "Created post successfully."]);
     }
 
     // post delete
     public function postDelete($id){
         Post::where('id', $id)->delete();
-        return back();
+        return back()->with(["deletesuccess" => "Deleted successfully"]);
     }
 
     // post update
@@ -47,7 +47,7 @@ class PostController extends Controller
         $id = $req->postId;
         Post::where('id', $id)->update($data);
         // dd($data, $id);
-        return redirect()->route('post#createPage');
+        return redirect()->route('post#createPage')->with(["updatesuccess" => "Updated successfully!"]);
     }
 
     // get post data

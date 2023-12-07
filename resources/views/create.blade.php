@@ -6,6 +6,31 @@
         <div class="row mt-5">
             <div class="col-12 col-md-5 p-3 rounded">
                 <div class="">
+                    {{-- alert message  --}}
+                    @if (session("insertsuccess"))
+                    <div class="alert-message">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{{ session("insertsuccess") }}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                    </div>    
+                    @endif
+                    @if (session("updatesuccess"))
+                    <div class="alert-message">
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <strong>{{ session("updatesuccess") }}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                    </div>    
+                    @endif
+                    @if (session("deletesuccess"))
+                    <div class="alert-message">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{{ session("deletesuccess") }}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                    </div>    
+                    @endif
                 <form action="{{ route('post#create') }}" method="post">
                     @csrf
                     <div class="text-group">
@@ -46,6 +71,8 @@
                         </div>
                     </div>
                     @endforeach
+
+                    {{ $posts->links() }}
 
                 </div>
             </div>
