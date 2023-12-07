@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+// use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
+
 
 class PostController extends Controller
 {
@@ -15,7 +18,7 @@ class PostController extends Controller
 
     // post create
     public function postCreate(Request $req){
-        
+        $this->validation($req);
         $data = $this->getPostData($req);
         Post::create($data);
         return back()->with(["insertsuccess" => "Created post successfully."]);
@@ -37,12 +40,12 @@ class PostController extends Controller
     // edit page
     public function editPage($id){
         $data = Post::where('id', $id)->get()->toArray();
-        // dd($data);
         return view('edit', compact('data'));
     }
 
     // post update now
     public function update(Request $req){
+        $this->validation($req);
         $data = $this->getPostData($req);
         $id = $req->postId;
         Post::where('id', $id)->update($data);
@@ -57,5 +60,22 @@ class PostController extends Controller
             'desc' => $req->postDesc
         ];
         return $arr;
+    }
+
+    // validation
+    private function validation($req){
+        $validationRule = [
+            'postTitle' => 'required|min:5|unique:posts,title',
+            'postDesc' => 'required'
+        ];
+
+        $validationMessage = [
+            'postTitle.required' => 'post title ဖြည့်ရန်လိုအပ်ပါသည်။',
+            'postDesc.required' => 'post description ဖြည့်ရန်လိုအပ်ပါသည်။',
+            'postTitle.min' => 'အနည်းဆုံး ၅ လုံးရှိရန် လိုအပ်ပါသည်။',
+            'postTitle.unique' => 'ခေါင်းစဥ် တူနေပါသည်။'
+        ];
+        
+        Validator::make($req->all(),$validationRule,$validationMessage)->validate();
     }
 }

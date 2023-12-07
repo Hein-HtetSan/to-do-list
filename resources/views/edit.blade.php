@@ -15,11 +15,19 @@
                     @csrf
                     <input type="hidden" name="postId" value={{ $data[0]['id'] }}>
                     <label for="" class="h3 text-secondary">Post Title</label>
-                    <input type="text" class="form-control my-3" name="postTitle" value="{{ $data[0]['title'] }}" placeholder="Enter Post Title" required>
+                    <input type="text" class="form-control my-3 @error('postTitle') is-invalid @enderror" name="postTitle" value="{{ $data[0]['title'] }}" placeholder="Enter Post Title" required>
+                    @error('postTitle')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                     <label for="" class="h3 text-secondary">Post Description</label>
-                    <textarea name="postDesc" id="" cols="30" rows="10" class="form-control my-3" placeholder="Enter Post Description" required>
-                        {{ $data[0]['desc'] }}
-                    </textarea>
+                    <textarea name="postDesc" id="" cols="30" rows="10" class="form-control my-3 @error('postDesc') is-invalid @enderror" placeholder="Enter Post Description" required>{{ $data[0]['desc'] }}</textarea>
+                    @error('postDesc')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                     <input type="submit" value="Update" class="btn bg-dark text-white my-2">
                 </form>
 

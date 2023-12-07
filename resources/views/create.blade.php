@@ -31,15 +31,34 @@
                           </div>
                     </div>    
                     @endif
+                    {{-- @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $item)
+                                    <li>{{ $item }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif --}}
                 <form action="{{ route('post#create') }}" method="post">
                     @csrf
                     <div class="text-group">
                         <label for="" class="h3 text-dark">Post Title</label>
-                        <input type="text" name="postTitle" id="" class="form-control" placeholder="Enter Post Title" required>
+                        <input type="text" name="postTitle" id="" value="{{ old("postTitle")}}" class="form-control @error('postTitle') is-invalid  @enderror" placeholder="Enter Post Title">
+                        @error('postTitle')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="text-group mt-3" >
                         <label for="" class="h3 text-dark">Post Description</label>
-                        <textarea name="postDesc" id="" cols="30" rows="10" class="form-control " required placeholder="Enter Post Description"></textarea>
+                        <textarea name="postDesc" id="" cols="30" rows="10" class="form-control  @error('postDesc') is-invalid  @enderror" placeholder="Enter Post Description">{{ old("postDesc" )}}</textarea>
+                        @error('postDesc')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
                     <input type="submit" value="Create" class="btn btn-primary mt-3">
                 </form>
