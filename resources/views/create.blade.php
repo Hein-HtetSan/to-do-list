@@ -48,6 +48,8 @@
             <div class="col-12 col-md-7 p-3 ">
                 <div class="data-container">
 
+                    <span>Total: {{ $posts->total() }}</span>
+
                     @foreach ($posts as $item)
                     <div class="post p-3 shadow rounded mb-2 border">
                         <div class="d-flex align-items-center justify-content-between">
