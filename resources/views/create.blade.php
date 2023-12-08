@@ -13,7 +13,7 @@
                             <strong>{{ session("insertsuccess") }}</strong> 
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                           </div>
-                    </div>    
+                    </div>
                     @endif
                     @if (session("updatesuccess"))
                     <div class="alert-message">
@@ -43,7 +43,7 @@
                 <form action="{{ route('post#create') }}" method="post">
                     @csrf
                     <div class="text-group">
-                        <label for="" class="h3 text-dark">Post Title</label>
+                        <label for="" class="h4 text-dark">Title</label>
                         <input type="text" name="postTitle" id="" value="{{ old("postTitle")}}" class="form-control @error('postTitle') is-invalid  @enderror" placeholder="Enter Post Title">
                         @error('postTitle')
                             <div class="invalid-feedback">
@@ -52,7 +52,7 @@
                         @enderror
                     </div>
                     <div class="text-group mt-3" >
-                        <label for="" class="h3 text-dark">Post Description</label>
+                        <label for="" class="h4 text-dark">Description</label>
                         <textarea name="postDesc" id="" cols="30" rows="10" class="form-control  @error('postDesc') is-invalid  @enderror" placeholder="Enter Post Description">{{ old("postDesc" )}}</textarea>
                         @error('postDesc')
                         <div class="invalid-feedback">
@@ -77,9 +77,22 @@
                         </div>
                         {{-- <p class="text-muted">{{ $item['desc'] }}</p> --}}
                         <p class="text-dark">{{ Str::words($item['desc'], 50, '...') }}</p>
+
+                        <span>
+                            <small><i class="fas fa-dollar text-primary"></i> {{ $item['price'] }} </small>
+                        </span>
+                        |
+                        <span>
+                            <small><i class="fas fa-map-pin text-danger"></i> {{ $item['address'] }} </small>
+                        </span>
+                        |
+                        <span>
+                            <small><i class="fas fa-star text-warning"></i> {{ $item['rating'] }} </small>
+                        </span>
+
                         <div class="text-end">
                             <a href="{{ route('post#delete', $item['id']) }}">
-                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
                             </a>
                             {{-- <form action="{{ route('post#delete', $item['id']) }}" method="post">
                                 @csrf
@@ -87,7 +100,7 @@
                                 <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                             </form> --}}
                             <a href="{{ route('post#update', $item['id']) }}">
-                                <button class="btn btn-sm btn-primary"><i class="fas fa-file-lines"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-file-lines"></i> Read</button>
                             </a>
                         </div>
                     </div>

@@ -65,7 +65,7 @@ class PostController extends Controller
     // validation
     private function validation($req){
         $validationRule = [
-            'postTitle' => 'required|min:5|unique:posts,title',
+            'postTitle' => 'required|min:5|unique:posts,title,'.$req->postId,
             'postDesc' => 'required'
         ];
 
