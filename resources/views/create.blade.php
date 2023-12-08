@@ -67,10 +67,10 @@
             <div class="col-12 col-md-7 p-3 ">
                 <div class="data-container">
 
-                    <span>Total: {{ $posts->total() }}</span>
+                    <h2 class="text-warning">Total: {{ $posts->total() }}</h2>
 
                     @foreach ($posts as $item)
-                    <div class="post p-3 shadow rounded mb-2 border">
+                    <div class="post p-3 shadow-sm rounded mb-2 border">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4>{{ $item['title'] }}</h4>
                             <span class="">{{ \Carbon\Carbon::parse($item['created_at'])->format('d/m/Y') }}</span>
