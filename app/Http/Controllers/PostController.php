@@ -12,7 +12,15 @@ class PostController extends Controller
 {
     // create custom view
     public function create() {
-        $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
+        // $posts = Post::orderBy('updated_at', 'desc')->paginate(3);
+
+        $posts = Post::when(request('searchKey'), function($query){
+                    $key = request('searchKey');
+                    $query->where('title', 'like', '%'.$key.'%');
+                })
+                ->orderBy('updated_at', 'desc')
+                ->paginate(4);
+
         return view('create', compact('posts'));
     }
 
@@ -66,14 +74,20 @@ class PostController extends Controller
     private function validation($req){
         $validationRule = [
             'postTitle' => 'required|min:5|unique:posts,title,'.$req->postId,
-            'postDesc' => 'required'
+            'postDesc' => 'required',
+            'postAddress' => 'required',
+            'postFee' => 'required',
+            'postRating' => 'required'
         ];
 
         $validationMessage = [
-            'postTitle.required' => 'post title ဖြည့်ရန်လိုအပ်ပါသည်။',
-            'postDesc.required' => 'post description ဖြည့်ရန်လိုအပ်ပါသည်။',
-            'postTitle.min' => 'အနည်းဆုံး ၅ လုံးရှိရန် လိုအပ်ပါသည်။',
-            'postTitle.unique' => 'ခေါင်းစဥ် တူနေပါသည်။'
+            'postTitle.required' => 'Post title field is empty!',
+            'postDesc.required' => 'Post description field is empty!',
+            'postTitle.min' => 'Post title need 5 minimum number of charater!',
+            'postTitle.unique' => 'Post title has been taken!',
+            'postFee.required' => 'Post field is empty',
+            'postAddress.required' => 'Post Address is empty',
+            'postRating.required' => 'Post Rating is empty'
         ];
         
         Validator::make($req->all(),$validationRule,$validationMessage)->validate();
