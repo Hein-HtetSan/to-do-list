@@ -46,11 +46,11 @@
                     {{-- model box  --}}
 
 
-                    <form action="{{ route('post#create') }}" method="post" class="">
+                    <form action="{{ route('post#create') }}" method="post" class="" enctype="multipart/form-data">
                         @csrf
                         <div class="text-group">
-                            <label for="" class="h5 text-dark">Title</label>
-                            <input type="text" name="postTitle" id="" value="{{ old('postTitle') }}"
+                            <label for="postTitle" class="h5 text-dark">Title</label>
+                            <input type="text" name="postTitle" id="postTitle" value="{{ old('postTitle') }}"
                                 class="form-control @error('postTitle') is-invalid  @enderror"
                                 placeholder="Enter Post Title">
                             @error('postTitle')
@@ -60,8 +60,8 @@
                             @enderror
                         </div>
                         <div class="text-group mt-3">
-                            <label for="" class="h5 text-dark">Description</label>
-                            <textarea name="postDesc" id="" cols="30" rows="5"
+                            <label for="postDesc" class="h5 text-dark">Description</label>
+                            <textarea name="postDesc" id="postDesc" cols="30" rows="5"
                                 class="form-control  @error('postDesc') is-invalid  @enderror" placeholder="Enter Post Description">{{ old('postDesc') }}</textarea>
                             @error('postDesc')
                                 <div class="invalid-feedback">
@@ -70,8 +70,8 @@
                             @enderror
                         </div>
                         <div class="text-group mt-3">
-                            <label for="" class="h5 text-dark">Image</label>
-                            <input type="file" name="postImage" id="" value="{{ old('postImage') }}"
+                            <label for="postImage" class="h5 text-dark">Image</label>
+                            <input type="file" name="postImage" id="postImage" value="{{ old('postImage') }}"
                                 class="form-control @error('postImage') is-invalid  @enderror"
                                 placeholder="Enter Course Fee">
                             @error('postImage')
@@ -81,8 +81,8 @@
                             @enderror
                         </div>
                         <div class="text-group mt-3">
-                            <label for="" class="h5 text-dark">Fee</label>
-                            <input type="text" name="postFee" id="" value="{{ old('postFee') }}"
+                            <label for="postFee" class="h5 text-dark">Fee</label>
+                            <input type="text" name="postFee" id="postFee" value="{{ old('postFee') }}"
                                 class="form-control @error('postFee') is-invalid  @enderror" placeholder="Enter Post Fee">
                             @error('postFee')
                                 <div class="invalid-feedback">
@@ -91,8 +91,8 @@
                             @enderror
                         </div>
                         <div class="text-group mt-3">
-                            <label for="" class="h5 text-dark">Address</label>
-                            <input type="text" name="postAddress" id="" value="{{ old('postAddress') }}"
+                            <label for="postAddress" class="h5 text-dark">Address</label>
+                            <input type="text" name="postAddress" id="postAddress" value="{{ old('postAddress') }}"
                                 class="form-control @error('postAddress') is-invalid  @enderror"
                                 placeholder="Enter Post Address">
                             @error('postAddress')
@@ -102,8 +102,8 @@
                             @enderror
                         </div>
                         <div class="text-group mt-3">
-                            <label for="" class="h5 text-dark">Rating</label>
-                            <input type="number" min="0" max="5" name="postRating" id=""
+                            <label for="postRating" class="h5 text-dark">Rating</label>
+                            <input type="number" min="0" max="5" name="postRating" id="postRating"
                                 value="{{ old('postRating') }}"
                                 class="form-control @error('postRating') is-invalid  @enderror"
                                 placeholder="Enter Post Rating">

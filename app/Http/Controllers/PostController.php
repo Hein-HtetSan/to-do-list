@@ -28,6 +28,12 @@ class PostController extends Controller
     public function postCreate(Request $req){
         $this->validation($req);
         $data = $this->getPostData($req);
+        // store image 
+        if($req->hasfile('postImage')){
+            $filename = uniqid() .'_'. $req->file('postImage')->getClientOriginalName(); // filename with unique
+            $req->file('postImage')->storeas('myImage', $filename);
+            $data["image"] = $filename;
+        }
         Post::create($data);
         return back()->with(["insertsuccess" => "Created post successfully."]);
     }
@@ -48,6 +54,7 @@ class PostController extends Controller
     // edit page
     public function editPage($id){
         $data = Post::where('id', $id)->get()->toArray();
+        // dd($data);
         return view('edit', compact('data'));
     }
 
@@ -57,7 +64,6 @@ class PostController extends Controller
         $data = $this->getPostData($req);
         $id = $req->postId;
         Post::where('id', $id)->update($data);
-        // dd($data, $id);
         return redirect()->route('post#createPage')->with(["updatesuccess" => "Updated successfully!"]);
     }
 
@@ -65,7 +71,10 @@ class PostController extends Controller
     private function getPostData($req): array{
         $arr = [
             'title' => $req->postTitle,
-            'desc' => $req->postDesc
+            'desc' => $req->postDesc,
+            'price' => $req->postFee,
+            'address' => $req->postAddress,
+            'rating' => $req->postRating,
         ];
         return $arr;
     }
@@ -77,7 +86,8 @@ class PostController extends Controller
             'postDesc' => 'required',
             'postAddress' => 'required',
             'postFee' => 'required',
-            'postRating' => 'required'
+            'postRating' => 'required',
+            'postImage' => 'mimes:jpg,png,jpeg|file'
         ];
 
         $validationMessage = [
@@ -87,7 +97,9 @@ class PostController extends Controller
             'postTitle.unique' => 'Post title has been taken!',
             'postFee.required' => 'Post field is empty',
             'postAddress.required' => 'Post Address is empty',
-            'postRating.required' => 'Post Rating is empty'
+            'postRating.required' => 'Post Rating is empty',
+            'postImage.mimes' => 'Not supported format',
+            'postImage.file' => 'Must be file type'
         ];
         
         Validator::make($req->all(),$validationRule,$validationMessage)->validate();

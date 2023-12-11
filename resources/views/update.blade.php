@@ -14,6 +14,7 @@
                 <p class="text-muted">
                     {{ $data[0]['desc'] }}
                 </p>
+                <small>Price: {{ $data[0]['price'] }}</small> | <small>Address: {{ $data[0]['address'] }}</small> | <small>Rating: {{ $data[0]['rating'] }}</small>
             </div>
         </div>
         <div class="row">
