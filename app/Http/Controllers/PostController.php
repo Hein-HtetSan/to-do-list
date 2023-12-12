@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 // use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -31,7 +32,7 @@ class PostController extends Controller
         // store image 
         if($req->hasfile('postImage')){
             $filename = uniqid() .'_'. $req->file('postImage')->getClientOriginalName(); // filename with unique
-            $req->file('postImage')->storeas('myImage', $filename);
+            $req->file('postImage')->storeas('public', $filename);
             $data["image"] = $filename;
         }
         Post::create($data);
@@ -46,7 +47,7 @@ class PostController extends Controller
 
     // post update
     public function postUpdate($id){
-        $data = Post::where('id', $id)->get()->toArray();
+        $data = Post::where('id', $id)->first();
         // dd($data);
         return view('update', compact('data'));
     }
@@ -60,10 +61,28 @@ class PostController extends Controller
 
     // post update now
     public function update(Request $req){
+
         $this->validation($req);
-        $data = $this->getPostData($req);
+        $updateData = $this->getPostData($req);
         $id = $req->postId;
-        Post::where('id', $id)->update($data);
+
+        if($req->hasfile('postImage')){
+
+            $old = Post::select('image')->where('id', $req->postId)->first()->toArray();
+            $old = $old['image'];
+
+            if($old != null){
+                Storage::delete('public/'.$old);
+            }
+
+            $filename = uniqid() .'_'. $req->file('postImage')->getClientOriginalName(); // filename with unique
+            $req->file('postImage')->storeas('public', $filename);
+            $updateData["image"] = $filename;
+        }
+
+        // dd($updateData);
+
+        Post::where('id', $id)->update($updateData);
         return redirect()->route('post#createPage')->with(["updatesuccess" => "Updated successfully!"]);
     }
 
@@ -87,7 +106,7 @@ class PostController extends Controller
             'postAddress' => 'required',
             'postFee' => 'required',
             'postRating' => 'required',
-            'postImage' => 'mimes:jpg,png,jpeg|file'
+            // 'postImage' => 'mimes:jpg,png,jpeg|file',
         ];
 
         $validationMessage = [
@@ -98,8 +117,6 @@ class PostController extends Controller
             'postFee.required' => 'Post field is empty',
             'postAddress.required' => 'Post Address is empty',
             'postRating.required' => 'Post Rating is empty',
-            'postImage.mimes' => 'Not supported format',
-            'postImage.file' => 'Must be file type'
         ];
         
         Validator::make($req->all(),$validationRule,$validationMessage)->validate();
